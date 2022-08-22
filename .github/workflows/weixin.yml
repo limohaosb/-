@@ -1,9 +1,9 @@
-name: python-app
+name: weixin
 on:
   push:  # 为了调试方便，修改代码之后push上去即可以看到效果
     paths: # 指定只有哪些文件修改了才会触发该工作流程
-      - python-app/**
-      - .github/workflows/python-app.yml
+      - weixin/**
+      - .github/workflows/weixin.yml
   schedule: 
     # 代表国际标准时间4点0分，北京时间需要+8小时，代表北京时间中午12点运行
     - cron: '0 3 * * *'
