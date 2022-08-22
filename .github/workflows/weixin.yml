@@ -2,7 +2,7 @@ name: weixin
 on:
   workflow_dispatch:
   schedule: # 定时任务
-    - cron: "10 5 * * *" # 每天 0 点跑 => 东八区 8点
+    - cron: '15 5 * * *' # 每天 0 点跑 => 东八区 8点
 
 jobs:
 #将工作流程中运行的所有作业组合在一起
