@@ -1,11 +1,8 @@
 name: weixin
 on:
-  push:  # 为了调试方便，修改代码之后push上去即可以看到效果
-    paths: # 指定只有哪些文件修改了才会触发该工作流程
-      - weixin/**
-      - .github/workflows/weixin.yml
+  workflow_dispatch:
   schedule: # 定时任务
-    - cron: "05 5 * * *" # 每天 0 点跑 => 东八区 8点
+    - cron: "10 5 * * *" # 每天 0 点跑 => 东八区 8点
 
 jobs:
 #将工作流程中运行的所有作业组合在一起
