@@ -1,5 +1,9 @@
 name: weixin
-on: 
+on:
+  push:  # 为了调试方便，修改代码之后push上去即可以看到效果
+    paths: # 指定只有哪些文件修改了才会触发该工作流程
+      - weixin/**
+      - .github/workflows/weixin.yml
   schedule:
     - cron: "30 22 * * *"
 jobs:
