@@ -19,7 +19,7 @@ def get_color():
  
  
 def get_access_token():
-    # appId
+    # appId 
     app_id = config["app_id"]
     # appSecret
     app_secret = config["app_secret"]
@@ -170,11 +170,11 @@ def get_birthday(birthday, year, today):
  
 def get_daily_love():
     #每日一句情话
-    url = "https://api.lovelive.tools/api/SweetNothings/Serialization/Json"
+    url = "http://api.tianapi.com/caihongpi/index?key=f841d49aefd15af36eb082296b5aab9f"
     r = requests.get(url)
-    all_dict = json.loads(r.text)
-    sentence = all_dict['returnObj'][0]
-    daily_love = sentence
+    content = r.json()
+    name = content['newslist'][0]
+    daily_love ="{}".format(name['content'])
     return daily_love
     
 def get_tianhang():
@@ -334,7 +334,7 @@ def send_message(weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, c
                 "value": daily_love,
                 "color": get_color()
             },
-            "birthday": {
+            "birthday": { 
                 "value": birthdays,
                 "color": get_color()
             },
