@@ -74,83 +74,9 @@ def get_weathers():
     proposal = ''
     if response['code'] == '200':
         proposal += response['daily'][0]['text']
-    return weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, category, pm2p5, proposal
+    return weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, category, pm2p5, proposal,region
 
-def get_weather():
-    city_name = '青岛'
- 
-    headers = {
-        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'Accept-Encoding':'gzip, deflate',
-        'Accept-Language':'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-        'Cache-Control':'max-age=0',
-        'Connection':'keep-alive',
-        'Cookie':'HttpOnly; userNewsPort0=1; Hm_lvt_080dabacb001ad3dc8b9b9049b36d43b=1660634957; f_city=%E9%87%91%E5%8D%8E%7C101210901%7C; defaultCty=101210901; defaultCtyName=%u91D1%u534E; Hm_lpvt_080dabacb001ad3dc8b9b9049b36d43b=1660639816',
-        'Host':'www.weather.com.cn',
-        'Referer':'http://www.weather.com.cn/weather1d/101120201.shtml',
-        'Upgrade-Insecure-Requests':'1',
-        'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.81 Safari/537.36 Edg/104.0.1293.54'
- 
-    }
-    url = "http://www.weather.com.cn/weather/101120201.shtml"
-    response = get(url = url, headers=headers)
- 
-    text = response.content.decode('utf-8')
-    soup = bs4.BeautifulSoup(text,'html.parser')
-    #存放日期
-    list_day = []
-    i = 0
-    day_list = soup.find_all('h1')
-    for each in day_list:
-        if i <= 1: #今明两天的数据
-            list_day.append(each.text.strip())
-            i += 1
- 
-    #天气情况
-    list_weather = []
-    weather_list = soup.find_all('p',class_ = 'wea') #之前报错是因为写了class 改为class_就好了
-    for i in weather_list:
-        list_weather.append(i.text)
-    list_weather = list_weather[0:2] #只取今明两天
- 
- 
-    #存放当前温度，和明天的最高温度和最低温度
-    tem_list = soup.find_all('p', class_='tem')
- 
-    i = 0
-    list_tem = []
-    for each in tem_list:
-        if i == 0:
-            list_tem.append([each.span.text+'℃',each.i.text])
-            i += 1
-        elif i > 0 and i < 2:
-            list_tem.append([each.span.text+'℃', each.i.text])
-            i += 1
- 
-    #风力
-    list_wind = []
-    wind_list = soup.find_all('p', class_='win')
-    for each in wind_list:
-        list_wind.append(each.i.text.strip())
-    list_wind = list_wind[0:2] #同只取今明两天
- 
-    today_date = list_day[0]
-    today_weather = list_weather[0]
-    now = list_tem[0]
-    today_wind = list_wind[0]
-    tomorrow = list_day[1]
-    tomorrow_weather = list_weather[1]
-    today_min=list_tem[0][1]
-    today_max=list_tem[0][0]
-    tomorrow_max = list_tem[1][0]
-    tomorrow_min = list_tem[1][1]
-    tomorrow_wind = list_wind[1]
- 
- 
-    return city_name,today_date,today_weather,now,today_wind,tomorrow,tomorrow_weather,tomorrow_max,tomorrow_min,tomorrow_wind,today_min,today_max
- 
- 
- 
+
 def get_birthday(birthday, year, today):
     # 获取生日的月和日
     birthday_month = int(birthday.split("-")[1])
@@ -168,8 +94,8 @@ def get_birthday(birthday, year, today):
         birth_day = str(birth_date.__sub__(today)).split(" ")[0]
     return birth_day
  
-def get_daily_love():
-    #每日一句情话
+def get_daily_love(): 
+    
     url = "http://api.tianapi.com/caihongpi/index?key=f841d49aefd15af36eb082296b5aab9f"
     r = requests.get(url)
     content = r.json()
@@ -190,26 +116,8 @@ def get_tianhang():
     tianhang_name="{}".format(name['content'])
     return tianhang_name 
     
-
-
-def get_ciba():
-    #每日一句英语（来自爱词霸）
-    url = "http://open.iciba.com/dsapi/"
-    headers = {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
-    }
-    r = get(url, headers=headers)
-    note_en = r.json()["content"]
-    note_ch = r.json()["note"]
-    return note_ch, note_en
-
-
-
-
-def send_message(weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, category, pm2p5, proposal,to_user,tianhang_name, access_token, city_name,today_date,today_weather,now,today_wind,tomorrow,tomorrow_weather,today_min,today_max,tomorrow_max,tomorrow_min,tomorrow_wind,daily_love,note_ch, note_en):
-    url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(access_token)
+def send_message(weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, category, pm2p5, proposal,user,accessToken, region,daily_love):
+    url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(accessToken)
     week_list = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
     year = localtime().tm_year
     month = localtime().tm_mon
@@ -229,7 +137,7 @@ def send_message(weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, c
         if k[0:5] == "birth":
             birthdays[k] = v
     data = {
-        "touser": to_user,
+        "touser": user,
         "template_id": config["template_id"],
         "url": "http://weixin.qq.com/download",
         "topcolor": "#FF0000",
@@ -278,56 +186,8 @@ def send_message(weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, c
                 "value": category,
                 "color": get_color()
             },
-            "city": {
-                "value": city_name,
-                "color": get_color()
-            },
-            "today": {
-                "value": today_date,
-                "color": get_color()
-            },
-            "today_weather": {
-                "value": today_weather,
-                "color": get_color()
-            },
-            "tianhang_name": {
-                "value": tianhang_name,
-                "color": get_color()
-            },
-            "now": {
-                "value": now,
-                "color": get_color()
-            },
-            "today_wind": {
-                "value": today_wind,
-                "color": get_color()
-            },
-            "tomorrow": {
-                "value": tomorrow,
-                "color": get_color()
-            },
-            "tomorrow_weather": {
-                "value": tomorrow_weather,
-                "color": get_color()
-            },
-            "tomorrow_max": {
-                "value": tomorrow_max,
-                "color": "#F44336"
-            },
-            "tomorrow_min": {
-                "value": tomorrow_min,
-                "color": "#29B6F6"
-            },
-            "today_min": {
-                "value": today_min,
-                "color": "#29B6F6"
-            },
-            "today_max": {
-                "value": today_max,
-                "color": "#F44336"
-            },
-            "tomorrow_wind": {
-                "value": tomorrow_wind,
+            "region": {
+                "value": region,
                 "color": get_color()
             },
             "daily_love": {
@@ -338,14 +198,7 @@ def send_message(weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, c
                 "value": birthdays,
                 "color": get_color()
             },
-            "note_en": {
-                "value": note_en,
-                "color": get_color()
-            },
-            "note_ch": {
-                "value": note_ch,
-                "color": get_color()
-            },
+            
             "love_day": {
                 "value": love_days,
                 "color": get_color()
@@ -394,13 +247,13 @@ if __name__ == "__main__":
     users = config["user"]
     # 传入省份和市获取天气信息
     tianhang_name=get_tianhang();
-    weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, category, pm2p5, proposal=get_weathers();
-    city_name,today_date,today_weather,now,today_wind,tomorrow,tomorrow_weather,tomorrow_max,tomorrow_min,tomorrow_wind,today_min,today_max = get_weather()
+    weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, category, pm2p5, proposal,region=get_weathers();
+    
     # 获取每日情话
     daily_love = get_daily_love()
     #获取每日一句英语 
-    note_ch, note_en = get_ciba()
+    
     # 公众号推送消息
     for user in users:
-        send_message(weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, category, pm2p5, proposal,user, tianhang_name,accessToken, city_name,today_date,today_weather,now,today_wind,tomorrow,tomorrow_weather,today_min,today_max,tomorrow_max,tomorrow_min,tomorrow_wind,daily_love,note_ch, note_en)
+        send_message(weather, temp, max_temp, min_temp, wind_dir, sunrise, sunset, category, pm2p5, proposal,user,accessToken, region,daily_love)
     os.system("pause")
