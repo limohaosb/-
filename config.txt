@@ -3,7 +3,7 @@
     "app_id":"wx3c75451974763f45",
     
     "app_secret":"02f2afe32e5cbfcbe528c578fbe8ed7f", 
-    "template_id":"UJlb1w7i6KWWtPgZ-17hUaKsUTML-BtWpt0PVKcLuJc",
+    "template_id":"LC2e1uNpkNQHvS7-zUx8izmEpIhEy24obPnxNaPhDP0",
     "user":["ohgWO52-g-f9x7bldRVYrZPsY9Ag","ohgWO58dyhgATBn-PZf3hqQ5z_Y0"], 
    "birthday1":"2022-09-10", 
    "love_date":"2022-05-01",
