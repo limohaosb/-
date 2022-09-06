@@ -1,5 +1,5 @@
 name: weixin  
-on:
+on: 
   push:  # 为了调试方便，修改代码之后push上去即可以看到效
     paths: # 指定只有哪些文件修改了才会触发该工作流程
       - -/config.txt
