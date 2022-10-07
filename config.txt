@@ -8,5 +8,5 @@
    "birthday1":"2022-10-8", 
    "love_date":"2022-05-01",
    "weather_key": "30b7732f8c344ea2831ede1ab3c98ab7",
-   "region": "南京"
+   "region": "郑州"
 }
